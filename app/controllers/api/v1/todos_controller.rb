@@ -1,22 +1,23 @@
 class Api::V1::TodosController < ApplicationController
   def get_all_todos
     # Query Parameters: {"completed" => "true", "priority" => "medium"}
-    all_todos = Todo.all
 
-    if params.key?(:priority)
+
+
       # If priority key is present the filter by priority
       # no need to convert the priority param string to int
       # rails will automatically map it to int using enum in model
-      priority_query = params[:priority]
-      matching_todo = all_todos.where({ priority: priority_query })
-      all_todos = matching_todo
-    end
+    priority_query = params[:priority]
+    #filter chain
+    all_todos = TodoQueries.new
+                           .filter_todo_by_priority(priority_query)
+                           .filter_todo_by_completion(params[:completed])
+                           .result
 
-    if params.key?(:completed)
-      completed_query = ActiveModel::Type::Boolean.new.cast(params[:completed])
-      matching_todo = all_todos.where({ completed: completed_query })
-      all_todos = matching_todo
-    end
+
+
+
+
 
     render json: { todo: all_todos }, status: :ok
   end
