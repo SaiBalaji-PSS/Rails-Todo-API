@@ -15,6 +15,8 @@ Rails.application.configure do
   # Enable server timing.
   config.server_timing = true
 
+
+
   # Enable/disable Action Controller caching. By default Action Controller caching is disabled.
   # Run rails dev:cache to toggle Action Controller caching.
   if Rails.root.join("tmp/caching-dev.txt").exist?
@@ -22,6 +24,9 @@ Rails.application.configure do
   else
     config.action_controller.perform_caching = false
   end
+  # This is needed to raise an error when unpermitted param is sent in request body
+  config.action_controller.action_on_unpermitted_parameters = :raise
+
 
   # Change to :null_store to avoid any caching.
   config.cache_store = :memory_store
