@@ -27,7 +27,7 @@ class Api::V1::TodosController < ApplicationController
       matching_todo = Todo.find(params[:id])
       render json: { todo: matching_todo }, status: :unprocessable_entity
     rescue => e
-      render json: { error: e.message }, status: :unprocessable_entity
+      render json: { message: e.message }, status: :unprocessable_entity
     end
   end
 
@@ -37,7 +37,7 @@ class Api::V1::TodosController < ApplicationController
     if new_todo.save
       render json: { message: "Added new todo", todo: new_todo }, status: :ok
     else
-      render json: { error: new_todo.errors.full_messages.to_sentence }, status: :unprocessable_entity
+      render json: { message: new_todo.errors.full_messages.to_sentence }, status: :ok
     end
   end
 
